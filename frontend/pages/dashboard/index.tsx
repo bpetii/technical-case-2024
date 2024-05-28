@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { GetServerSideProps } from 'next'
-import { useRouter } from 'next/router'
 import { formatDate } from '@/helpers/formatDate'
 
 interface User {
@@ -42,7 +41,6 @@ const getFilteredData = async (userId: number | null, activityId: number | null)
 };
 
 const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
-  const router = useRouter()
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
   const [selectedActivityId, setSelectedActivityId] = useState<number | null>(null)
   const [filteredUserActivities, setFilteredUserActivities] = useState<UserActivity[]>(userActivities)
@@ -57,17 +55,9 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
   }, [selectedUserId, selectedActivityId])
   
   return (
-    <main
-    className={`flex min-h-screen flex-col items-center justify-between p-8`}
-  >
-     <div className="fixed top-0 left-0 w-full bg-white shadow-md z-10 p-4">
-      <div className="flex space-x-4 items-center mb-4">
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={() => router.push('/')}
-          >
-            Back
-          </button>
+    <main>
+      <div className="left-0 w-full bg-white shadow-md z-10 p-4">
+        <div className="flex space-x-4 items-center mb-4">
           <div className="flex space-x-4">
             <select
               className="border p-2"
@@ -81,7 +71,6 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
                 </option>
               ))}
             </select>
-
             <select
               className="border p-2"
               value={selectedActivityId ?? ''}
@@ -97,7 +86,7 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
           </div>
         </div>
       </div>
-      <div className="pt-24">
+      <div className="pt-10 bg-gray shadow-md ">
         {filteredUserActivities?.map((ua) => {
           const user = users.find((u) => u.id === ua.userId)
           const activity = activities.find((a) => a.id === ua.activityId)
