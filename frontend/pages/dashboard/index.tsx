@@ -27,7 +27,7 @@ interface DashboardProps {
   userActivities: UserActivity[]
 }
 
-let baseUrl = 'http://localhost:8000' //here we can check environment variables for development and production
+const baseUrl = 'http://localhost:8000' //here we can check environment variables for development and production
 
 const getFilteredData = async (userId: number | null, activityId: number | null) => {
   const queryParams = new URLSearchParams();
