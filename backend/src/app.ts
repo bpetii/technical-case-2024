@@ -13,6 +13,16 @@ app.get('/users', (_req, res) => {
     res.status(200).json(users)
 })
 
+app.get('/user-activities', (_req, res) => {
+  const userAcivities = db.getUserActivities()
+  res.status(200).json(userAcivities)
+})
+
+app.get('/activities', (_req, res) => {
+  const userAcivities = db.getActivities()
+  res.status(200).json(userAcivities)
+})
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
 })
