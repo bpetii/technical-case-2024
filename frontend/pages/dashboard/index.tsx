@@ -115,14 +115,8 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { userId, activityId } = context.query
-
-  const queryParams = new URLSearchParams()
-  if (userId) queryParams.append('userId', userId as string)
-  if (activityId) queryParams.append('activityId', activityId as string)
-
-  const res = await fetch(`${baseUrl}/dashboard-data?${queryParams.toString()}`)
+export const getServerSideProps: GetServerSideProps = async () => {
+  const res = await fetch(`${baseUrl}/dashboard-data`)
   const data = await res.json()
 
   return {
