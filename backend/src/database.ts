@@ -89,6 +89,18 @@ const userActivities = [
         userId: 4,
         activityId: 2,
         timestamp: '2021-01-08T00:00:00'
+    },
+    {
+        id: 9,
+        userId: 2,
+        activityId: 2,
+        timestamp: '2021-01-09T00:00:00'
+    },
+    {
+        id: 10,
+        userId: 2,
+        activityId: 3,
+        timestamp: '2021-01-10T00:00:00'
     }
 ]
 

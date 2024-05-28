@@ -37,6 +37,7 @@ const getFilteredData = async (userId: number | null, activityId: number | null)
 
   const res = await fetch(`${baseUrl}/dashboard-data?${queryParams.toString()}`);
   const data = await res.json();
+
   return {users: data.users, activities: data.activities, userActivities: data.userActivities}
 };
 
