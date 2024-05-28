@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main
@@ -5,6 +7,7 @@ export default function Home() {
     >
       <div className="max-w-5xl w-full items-center justify-center">
         <h1 className="text-2xl font-bold text-center">Home</h1>
+        <Link href="/dashboard">Dashboard</Link>
       </div>
     </main>
   )
