@@ -38,7 +38,6 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
 
   const handleFilterChange = async (userId: number | null, activityId: number | null) => {
     const queryParams = new URLSearchParams()
-    console.log(userId)
     if (userId !== null && !isNaN(userId)) queryParams.append('userId', userId.toString())
     if (activityId !== null && !isNaN(activityId)) queryParams.append('activityId', activityId.toString())
 
