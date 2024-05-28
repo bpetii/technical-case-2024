@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
+import { formatDate } from '@/helpers/formatDate'
 
 interface User {
   id: number
@@ -100,7 +101,7 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
             <div key={ua.id} className="border p-4 mb-4">
               <p>User: {user?.name}</p>
               <p>Activity: {activity?.name}</p>
-              <p>Timestamp: {ua.timestamp}</p>
+              <p>Time: {formatDate(ua.timestamp)}</p>
             </div>
           )
         })}
