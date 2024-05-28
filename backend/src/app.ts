@@ -28,13 +28,13 @@ app.get('/activities', (_req, res) => {
 })
 
 app.get('/dashboard-data', (req: Request, res: Response) => {
-  // Validate request parameters
   const { userId, activityId } = req.query;
 
   let filteredUserActivities = db.getUserActivities()
 
   if (userId) {
     const parsedUserId = parseInt(userId as string)
+    // Validate request parameters
     if (isNaN(parsedUserId)) {
       return res.status(400).json({ message: 'Invalid userId' })
     }
@@ -43,6 +43,7 @@ app.get('/dashboard-data', (req: Request, res: Response) => {
 
   if (activityId) {
     const parsedActivityId = parseInt(activityId as string)
+    // Validate request parameters
     if (isNaN(parsedActivityId)) {
       return res.status(400).json({ message: 'Invalid activityId' })
     }
