@@ -30,15 +30,14 @@ interface DashboardProps {
 
 let baseUrl = 'http://localhost:8000' //here we can check environment variables for development and production
 
-async function getFilteredUserActivities(userId: number | null, activityId: number | null) {
-  const queryParams = new URLSearchParams()
-  if (userId !== null && !isNaN(userId)) queryParams.append('userId', userId.toString())
-  if (activityId !== null && !isNaN(activityId)) queryParams.append('activityId', activityId.toString())
+const getFilteredData = async (userId: number | null, activityId: number | null) => {
+  const queryParams = new URLSearchParams();
+  if (userId !== null && !isNaN(userId)) queryParams.append('userId', userId.toString());
+  if (activityId !== null && !isNaN(activityId)) queryParams.append('activityId', activityId.toString());
 
-  const res = await fetch(`${baseUrl}/dashboard-data?${queryParams.toString()}`)
-  const data = await res.json()
-
-  return data;
+  const res = await fetch(`${baseUrl}/dashboard-data?${queryParams.toString()}`);
+  const data = await res.json();
+  return {users: data.users, activities: data.activities, userActivities: data.userActivities}
 };
 
 const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
@@ -49,7 +48,7 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getFilteredUserActivities(selectedUserId, selectedActivityId);
+      const data = await getFilteredData(selectedUserId, selectedActivityId);
       setFilteredUserActivities(data.userActivities);
     };
   
@@ -116,16 +115,15 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`${baseUrl}/dashboard-data`)
-  const data = await res.json()
-
+  const { users, activities, userActivities } = await getFilteredData(null, null);
+  
   return {
     props: {
-      users: data.users,
-      activities: data.activities,
-      userActivities: data.userActivities,
+      users,
+      activities,
+      userActivities,
     },
-  }
+  };
 }
 
 export default Dashboard
