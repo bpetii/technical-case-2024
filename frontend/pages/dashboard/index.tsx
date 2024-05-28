@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { formatDate } from '@/helpers/formatDate'
@@ -30,25 +30,31 @@ interface DashboardProps {
 
 let baseUrl = 'http://localhost:8000' //here we can check environment variables for development and production
 
+async function getFilteredUserActivities(userId: number | null, activityId: number | null) {
+  const queryParams = new URLSearchParams()
+  if (userId !== null && !isNaN(userId)) queryParams.append('userId', userId.toString())
+  if (activityId !== null && !isNaN(activityId)) queryParams.append('activityId', activityId.toString())
+
+  const res = await fetch(`${baseUrl}/dashboard-data?${queryParams.toString()}`)
+  const data = await res.json()
+
+  return data;
+};
+
 const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
   const router = useRouter()
-  const [selectedUser, setSelectedUser] = useState<number | null>(null)
-  const [selectedActivity, setSelectedActivity] = useState<number | null>(null)
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
+  const [selectedActivityId, setSelectedActivityId] = useState<number | null>(null)
   const [filteredUserActivities, setFilteredUserActivities] = useState<UserActivity[]>(userActivities)
 
-  const handleFilterChange = async (userId: number | null, activityId: number | null) => {
-    const queryParams = new URLSearchParams()
-    if (userId !== null && !isNaN(userId)) queryParams.append('userId', userId.toString())
-    if (activityId !== null && !isNaN(activityId)) queryParams.append('activityId', activityId.toString())
-
-    const res = await fetch(`${baseUrl}/dashboard-data?${queryParams.toString()}`)
-    const data = await res.json()
-
-    setSelectedUser(userId)
-    setSelectedActivity(activityId)
-
-    setFilteredUserActivities(data.userActivities)
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getFilteredUserActivities(selectedUserId, selectedActivityId);
+      setFilteredUserActivities(data.userActivities);
+    };
+  
+    fetchData();
+  }, [selectedUserId, selectedActivityId])
   
   return (
     <main
@@ -65,8 +71,8 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
           <div className="flex space-x-4">
             <select
               className="border p-2"
-              value={selectedUser ?? ''}
-              onChange={(e) => handleFilterChange(parseInt(e.target.value), selectedActivity)}
+              value={selectedUserId ?? ''}
+              onChange={(e) => setSelectedUserId(parseInt(e.target.value))}
             >
               <option value="">Select User</option>
               {users.map((user) => (
@@ -78,8 +84,8 @@ const Dashboard = ({ users, activities, userActivities }: DashboardProps) => {
 
             <select
               className="border p-2"
-              value={selectedActivity ?? ''}
-              onChange={(e) => handleFilterChange(selectedUser, parseInt(e.target.value))}
+              value={selectedActivityId ?? ''}
+              onChange={(e) => setSelectedActivityId(parseInt(e.target.value))}
             >
               <option value="">Select Activity</option>
               {activities.map((activity) => (
