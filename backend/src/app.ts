@@ -23,8 +23,8 @@ app.get('/user-activities', (_req, res) => {
 })
 
 app.get('/activities', (_req, res) => {
-  const userAcivities = db.getActivities()
-  res.status(200).json(userAcivities)
+  const activities = db.getActivities()
+  res.status(200).json(activities)
 })
 
 app.get('/dashboard-data', (req: Request, res: Response) => {
